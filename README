@@ -1,0 +1,8 @@
+This is just me following along with the article https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/ and its corresponding github repo
+
+We're making a parser for the Bantam programming language (which only contains expressions, no statements). This highlights the use of Pratt parsing.
+
+Bantam programming language:
+* Has prefix (+ - ~ !), postfix (!), infix (+ - * / ^), mixfix (?:) operators
+* Has multiple precedence levels and left / right associative operators
+* Has assignment, function calls, parentheses
