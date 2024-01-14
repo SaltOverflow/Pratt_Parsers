@@ -1,8 +1,25 @@
 package root;
 
+import expressions.Expression;
+
 public class Main {
   public static void main(String[] args) {
-    testLexer();
+    testParser();
+  }
+
+  public static void testParser() {
+    String testString = "+-!~abcd";
+    System.out.println("input string: " + testString);
+    System.out.println();
+
+    Lexer lexer = new Lexer(testString);
+    Parser parser = new BantamParser(lexer);
+
+    Expression result = parser.parseExpression();
+    StringBuilder builder = new StringBuilder();
+    result.print(builder);
+    String actual = builder.toString();
+    System.out.println(actual);
   }
 
   public static void testLexer() {
