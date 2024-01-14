@@ -8,7 +8,7 @@ public class Main {
   }
 
   public static void testParser() {
-    String testString = "+-!~abcd";
+    String testString = "+-!~abcd + b - -b * c / d";
     System.out.println("input string: " + testString);
     System.out.println();
 
