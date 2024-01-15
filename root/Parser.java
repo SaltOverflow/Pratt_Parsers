@@ -23,7 +23,7 @@ public class Parser {
     mInfixParselets.put(token, parselet);
   }
 
-  public Expression parseExpression() {
+  public Expression parseExpression(int precedence) {
     Token token = consume();
     PrefixParselet prefix = mPrefixParselets.get(token.getType());
 
@@ -32,19 +32,46 @@ public class Parser {
 
     Expression left = prefix.parse(this, token);
 
-    token = consume();
-    InfixParselet infix = mInfixParselets.get(token.getType());
+    while (precedence < getPrecedence()) {
+      token = consume();
 
-    if (infix == null) return left;
+      InfixParselet infix = mInfixParselets.get(token.getType());
+      left = infix.parse(this, left, token);
+    }
 
-    return infix.parse(this, left, token);
+    return left;
+  }
+
+  public Expression parseExpression() {
+    return parseExpression(0);
   }
 
   public Token consume() {
-    return mTokens.next();
+    if (mRead == null) {
+      return mTokens.next();
+    } else {
+      Token ret = mRead;
+      mRead = null;
+      return ret;
+    }
+  }
+
+  private Token lookAhead() {
+    if (mRead == null) {
+      mRead = mTokens.next();
+    }
+    return mRead;
+  }
+
+  private int getPrecedence() {
+    InfixParselet parser = mInfixParselets.get(lookAhead().getType());
+    if (parser != null) return parser.getPrecedence();
+
+    return 0;
   }
 
   private final Iterator<Token> mTokens;
+  private Token mRead = null;
   private final Map<TokenType, PrefixParselet> mPrefixParselets =
     new HashMap<TokenType, PrefixParselet>();
   private final Map<TokenType, InfixParselet> mInfixParselets =

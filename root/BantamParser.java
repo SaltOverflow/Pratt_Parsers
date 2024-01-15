@@ -13,18 +13,22 @@ public class BantamParser extends Parser {
     prefix(TokenType.TILDE);
     prefix(TokenType.BANG);
 
-    infix(TokenType.PLUS);
-    infix(TokenType.MINUS);
-    infix(TokenType.ASTERISK);
-    infix(TokenType.SLASH);
-    infix(TokenType.CARET);
+    infixLeft(TokenType.PLUS,     Precedence.SUM);
+    infixLeft(TokenType.MINUS,    Precedence.SUM);
+    infixLeft(TokenType.ASTERISK, Precedence.PRODUCT);
+    infixLeft(TokenType.SLASH,    Precedence.PRODUCT);
+    infixRight(TokenType.CARET,   Precedence.EXPONENT);
   }
 
   public void prefix(TokenType token) {
-    register(token, new PrefixOperatorParselet());
+    register(token, new PrefixOperatorParselet(Precedence.PREFIX));
   }
 
-  public void infix(TokenType token) {
-    register(token, new BinaryOperatorParselet());
+  public void infixLeft(TokenType token, int precedence) {
+    register(token, new BinaryOperatorParselet(precedence, false));
+  }
+
+  public void infixRight(TokenType token, int precedence) {
+    register(token, new BinaryOperatorParselet(precedence, true));
   }
 }
