@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import expressions.Expression;
-import parselets.PrefixParselet;
 import parselets.InfixParselet;
+import parselets.PrefixParselet;
 
 public class Parser {
   public Parser(Iterator<Token> tokens) {
@@ -44,6 +44,24 @@ public class Parser {
 
   public Expression parseExpression() {
     return parseExpression(0);
+  }
+
+  public boolean match(TokenType expected) {
+    Token token = lookAhead();
+    if (token.getType() != expected) return false;
+
+    consume();
+    return true;
+  }
+
+  public Token consume(TokenType expected) {
+    Token token = consume();
+    if (token.getType() != expected) {
+      throw new ParseException("Expected token " + expected +
+        " and found " + token.getType());
+    }
+
+    return token;
   }
 
   public Token consume() {

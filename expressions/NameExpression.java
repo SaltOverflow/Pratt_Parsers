@@ -5,6 +5,8 @@ public class NameExpression implements Expression {
     mName = name;
   }
 
+  public String getName() { return mName; }
+
   public void print(StringBuilder builder) {
     builder.append(mName);
   }
