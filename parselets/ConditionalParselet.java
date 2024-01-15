@@ -9,7 +9,7 @@ import expressions.Expression;
 
 public class ConditionalParselet implements InfixParselet {
   public Expression parse(Parser parser, Expression left, Token token) {
-    Expression truePath = parser.parseExpression(Precedence.CONDITIONAL);
+    Expression truePath = parser.parseExpression(Precedence.CONDITIONAL - 1);
     parser.consume(TokenType.COLON);
     Expression falsePath = parser.parseExpression(Precedence.CONDITIONAL - 1);
 
